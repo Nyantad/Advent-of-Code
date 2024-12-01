@@ -6,9 +6,12 @@ def read_file(filename):
     
     with open(filename, 'r') as file:
         for line in file:
-            left, right = map(int, line.split())
-            left_list.append(left)
-            right_list.append(right)
+            try:
+                left, right = map(int, line.split())
+                left_list.append(left)
+                right_list.append(right)
+            except ValueError:
+                print(f"Skipping line due to ValueError: {line.strip()}")
     
     return left_list, right_list
 
@@ -26,7 +29,6 @@ def calculate_total_distance(left_list, right_list):
 
 def calculate_similarity_score(left_list, right_list):
     right_counter = Counter(right_list)
-    
     similarity_score = 0
     for left in left_list:
         similarity_score += left * right_counter[left]
@@ -34,12 +36,12 @@ def calculate_similarity_score(left_list, right_list):
     return similarity_score
 
 
-filename = 'data.txt'
+FILENAME = 'data.txt'
 
-left_list, right_list = read_file(filename)
+left_list, right_list = read_file(FILENAME)
 
-result = calculate_total_distance(left_list, right_list)
-print("Total distance:", result)
+total_distance = calculate_total_distance(left_list, right_list)
+print("Total distance:", total_distance)
 
-result = calculate_similarity_score(left_list, right_list)
-print("Similarity score:", result)
+similarity_score = calculate_similarity_score(left_list, right_list)
+print("Similarity score:", similarity_score)
